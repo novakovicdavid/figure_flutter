@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:figure_flutter/welcome.dart';
 import 'package:flutter/material.dart';
+
+var httpclient = HttpClient();
 
 void main() {
   runApp(const MyApp());
