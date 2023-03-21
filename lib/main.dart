@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 var httpclient = HttpClient();
 
+String sessionToken = "";
+
 void main() {
   runApp(const MyApp());
 }

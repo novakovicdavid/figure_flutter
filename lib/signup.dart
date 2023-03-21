@@ -103,6 +103,7 @@ class SignupFormState extends State<SignupForm> {
                         jsonDecode(await readResponse(response));
                         if (parsedResponseBody["profile"] != null) {
                           setState(() {
+                            sessionToken = response.headers.value("Set-Cookie")!;
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(

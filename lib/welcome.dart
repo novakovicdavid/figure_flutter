@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:figure_flutter/signin.dart';
 import 'package:figure_flutter/signup.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class WelcomeScreen extends StatelessWidget {
             child: Column(children: [
               OpenContainer(
                 transitionType: _containerTransitionType,
-                transitionDuration: Duration(milliseconds: 500),
+                transitionDuration: const Duration(milliseconds: 500),
                 openBuilder: (context, _) => const SignupForm(),
                 closedElevation: 0,
                 closedColor: Colors.blue,
@@ -46,10 +47,27 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                  margin: const EdgeInsets.only(top: 20),
-                  child: ElevatedButton(
-                      onPressed: () {}, child: const Text("Login"))),
+              OpenContainer(
+                transitionType: _containerTransitionType,
+                transitionDuration: const Duration(milliseconds: 500),
+                openBuilder: (context, _) => const SignInForm(),
+                closedElevation: 0,
+                closedColor: Colors.blue,
+                closedBuilder: (context, _) => Container(
+                  alignment: Alignment.center,
+                  width: 100,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      "Login",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ),
+              ),
             ]))
       ],
     ));
