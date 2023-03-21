@@ -87,6 +87,7 @@ class SignInFormState extends State<SignInForm> {
                             if (parsedResponseBody["profile"] != null) {
                               setState(() {
                                 sessionToken = response.headers.value("Set-Cookie")!;
+                                localStorage.setString("session_token", sessionToken);
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
