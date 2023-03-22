@@ -16,7 +16,6 @@ class MainWidgetState extends State<MainWidget> {
     return Scaffold(
       body: <Widget>[
         Container(
-          color: Colors.red,
           alignment: Alignment.center,
           child: const BrowsePage(),
         ),
