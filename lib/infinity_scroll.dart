@@ -7,38 +7,38 @@ import 'figure_dto.dart';
 import 'figure_page.dart';
 
 class FigureListView extends StatefulWidget {
-  FigureListView({super.key, required this.firstFigures});
+  final List<FigureDTO> firstFigures;
+  final int? profileId;
 
-  List<FigureDTO> firstFigures;
+  const FigureListView({super.key, required this.firstFigures, this.profileId});
 
   @override
-  FigureListViewState createState() => FigureListViewState(firstFigures);
+  FigureListViewState createState() => FigureListViewState();
 }
 
 class FigureListViewState extends State<FigureListView> {
-  FigureListViewState(this.firstFigures) {
-    _pagingController = PagingController(
-        firstPageKey: firstFigures[firstFigures.length - 1].id);
-  }
-
-  List<FigureDTO> firstFigures;
   static const _pageSize = 3;
-
   late final PagingController<int, FigureDTO> _pagingController;
+  late final List<FigureDTO> firstFigures;
+  late final int? profileId;
 
   @override
   void initState() {
+    super.initState();
+    firstFigures = widget.firstFigures;
+    profileId = widget.profileId;
+    _pagingController = PagingController(
+        firstPageKey: firstFigures[firstFigures.length - 1].id);
     _pagingController.appendPage(
         firstFigures, firstFigures[firstFigures.length - 1].id);
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-    super.initState();
   }
 
   Future<void> _fetchPage(int afterId) async {
     try {
-      final newItems = await getFigures(afterId);
+      final newItems = await getFigures(afterId, profileId);
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);

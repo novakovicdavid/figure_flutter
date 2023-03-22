@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:figure_flutter/backend.dart';
+import 'package:figure_flutter/browse.dart';
 import 'package:flutter/material.dart';
 
 class FigurePage extends StatelessWidget {
@@ -33,7 +34,9 @@ class FigurePage extends StatelessWidget {
                 Text(figure.title),
                 Text(figure.description ?? ""),
                 TextButton(onPressed: () {
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) => FigurePage(figure.id)));
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                      Scaffold(body: BrowsePage(profileId: figure.profileDTO!.id))));
                 }, child: Text(figure.profileDTO!.username))
               ]));
             },
