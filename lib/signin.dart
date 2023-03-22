@@ -1,11 +1,9 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'browse.dart';
+import 'backend.dart';
+import 'mainpage.dart';
 import 'main.dart';
 
 class SignInForm extends StatefulWidget {
@@ -91,7 +89,7 @@ class SignInFormState extends State<SignInForm> {
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const BrowsePage()),
+                                      builder: (context) => const MainWidget()),
                                       (route) => false,
                                 );
                               });
@@ -105,13 +103,4 @@ class SignInFormState extends State<SignInForm> {
         ))
     );
   }
-}
-
-Future<String> readResponse(HttpClientResponse response) {
-  final completer = Completer<String>();
-  final contents = StringBuffer();
-  response.transform(utf8.decoder).listen((data) {
-    contents.write(data);
-  }, onDone: () => completer.complete(contents.toString()));
-  return completer.future;
 }

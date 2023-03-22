@@ -1,10 +1,9 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:figure_flutter/browse.dart';
+import 'package:figure_flutter/mainpage.dart';
 import 'package:flutter/material.dart';
 
+import 'backend.dart';
 import 'main.dart';
 
 class SignupForm extends StatefulWidget {
@@ -108,7 +107,7 @@ class SignupFormState extends State<SignupForm> {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const BrowsePage()),
+                                  builder: (context) => const MainWidget()),
                                   (route) => false,
                             );
                           });
@@ -121,13 +120,4 @@ class SignupFormState extends State<SignupForm> {
       ],
     )));
   }
-}
-
-Future<String> readResponse(HttpClientResponse response) {
-  final completer = Completer<String>();
-  final contents = StringBuffer();
-  response.transform(utf8.decoder).listen((data) {
-    contents.write(data);
-  }, onDone: () => completer.complete(contents.toString()));
-  return completer.future;
 }

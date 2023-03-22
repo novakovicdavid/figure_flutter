@@ -1,11 +1,10 @@
-import 'dart:io';
-
-import 'package:figure_flutter/browse.dart';
+import 'package:figure_flutter/mainpage.dart';
 import 'package:figure_flutter/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-var httpclient = HttpClient();
+
+
 
 String sessionToken = "";
 
@@ -30,10 +29,11 @@ class MyApp extends StatelessWidget {
     Widget screenToShow;
     try {
       sessionToken = localStorage.getString("session_token")!;
-      screenToShow = const BrowseWidget();
+      screenToShow = const MainWidget();
     } catch (e) {
       screenToShow = const WelcomeScreen();
     }
+    // httpclient.addCredentials(url, realm, credentials)
 
     return MaterialApp(
         title: 'Figure',
