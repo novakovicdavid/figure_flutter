@@ -4,6 +4,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'backend.dart';
 import 'figure_dto.dart';
+import 'figure_page.dart';
 
 class FigureListView extends StatefulWidget {
   FigureListView({super.key, required this.firstFigures});
@@ -74,15 +75,22 @@ class FigureListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (Column(children: [
+    return (InkWell(
+        onTap: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => FigurePage(figure.id))),
+        child: Column(children: [
       CachedNetworkImage(
         imageUrl: figure.url,
         placeholder: (context, url) => AspectRatio(
             aspectRatio: figure.width / figure.height,
-            child: const Center(child: SizedBox(width: 50, height: 50, child: CircularProgressIndicator()))),
+            child: const Center(
+                child: SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: CircularProgressIndicator()))),
         errorWidget: (context, url, error) => const Icon(Icons.error),
       ),
       Text(figure.title)
-    ]));
+    ])));
   }
 }

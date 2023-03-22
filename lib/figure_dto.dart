@@ -1,3 +1,5 @@
+import 'package:figure_flutter/profile_dto.dart';
+
 class FigureDTO {
   FigureDTO({
     required this.id,
@@ -6,6 +8,7 @@ class FigureDTO {
     required this.width,
     required this.height,
     required this.url,
+    this.profileDTO
   });
 
   int id;
@@ -14,6 +17,7 @@ class FigureDTO {
   int width;
   int height;
   String url;
+  ProfileDTO? profileDTO;
 
   factory FigureDTO.fromJson(Map<String, dynamic> json) => FigureDTO(
       id: json["id"],
@@ -21,5 +25,6 @@ class FigureDTO {
       description: json["description"],
       width: json["width"],
       height: json["height"],
-      url: json["url"]);
+      url: json["url"],
+      profileDTO: ProfileDTO.fromJson(json["profile"]));
 }
