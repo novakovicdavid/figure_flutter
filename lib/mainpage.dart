@@ -1,4 +1,5 @@
 import 'package:figure_flutter/browse.dart';
+import 'package:figure_flutter/main.dart';
 import 'package:flutter/material.dart';
 
 class MainWidget extends StatefulWidget {
@@ -13,16 +14,16 @@ class MainWidgetState extends State<MainWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print(sessionProfile.id);
     return Scaffold(
       body: <Widget>[
         Container(
           alignment: Alignment.center,
-          child: const BrowsePage(),
+          child: BrowsePage(),
         ),
         Container(
-          color: Colors.green,
           alignment: Alignment.center,
-          child: const Text('Page 2'),
+          child: BrowsePage(profileId: sessionProfile.id),
         ),
         Container(
           color: Colors.blue,

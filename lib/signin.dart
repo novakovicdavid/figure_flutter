@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:figure_flutter/profile_dto.dart';
 import 'package:flutter/material.dart';
 
 import 'backend.dart';
@@ -80,12 +81,14 @@ class SignInFormState extends State<SignInForm> {
                             connection.headers.contentLength = json.length;
                             connection.write(json);
                             var response = await connection.close();
-                            var parsedResponseBody =
-                            jsonDecode(await readResponse(response));
+                            var jsonString = await readResponse(response);
+                            var parsedResponseBody = jsonDecode(jsonString);
                             if (parsedResponseBody["profile"] != null) {
                               setState(() {
                                 sessionToken = response.headers.value("Set-Cookie")!;
+                                sessionProfile = ProfileDTO.fromJson(parsedResponseBody["profile"]);
                                 localStorage.setString("session_token", sessionToken);
+                                localStorage.setString("profile", jsonString);
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
