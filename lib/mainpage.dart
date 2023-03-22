@@ -14,12 +14,11 @@ class MainWidgetState extends State<MainWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print(sessionProfile.id);
     return Scaffold(
       body: <Widget>[
         Container(
           alignment: Alignment.center,
-          child: BrowsePage(),
+          child: const BrowsePage(),
         ),
         Container(
           alignment: Alignment.center,

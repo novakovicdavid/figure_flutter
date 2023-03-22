@@ -4,9 +4,9 @@ import 'package:figure_flutter/browse.dart';
 import 'package:flutter/material.dart';
 
 class FigurePage extends StatelessWidget {
-  int id;
+  final int id;
 
-  FigurePage(this.id, {super.key});
+  const FigurePage(this.id, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -21,20 +21,24 @@ class SignupFormState extends State<SignupForm> {
   static RegExp usernameRegex = RegExp("^[a-zA-Z0-9]+-*[a-zA-Z0-9]+?");
   var usernameValidator = (String? username) {
     if (username == null || username.isEmpty) return 'Please enter a username';
-    if (username.length < 3)
+    if (username.length < 3) {
       return 'Username must be at least 3 characters long';
-    if (!usernameRegex.hasMatch(username))
+    }
+    if (!usernameRegex.hasMatch(username)) {
       return "Username is not valid. Only the characters A-Z, a-z and '-' are accepted.";
+    }
     return null;
   };
   var emailValidator = (String? email) {
-    if (email == null || !emailRegex.hasMatch(email))
+    if (email == null || !emailRegex.hasMatch(email)) {
       return "Please enter a valid email";
+    }
     return null;
   };
   var passwordValidator = (String? password) {
-    if (password == null || password.length < 6)
+    if (password == null || password.length < 6) {
       return "Password must be >= 6 characters long";
+    }
     return null;
   };
 

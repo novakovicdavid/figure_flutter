@@ -21,13 +21,15 @@ class SignInFormState extends State<SignInForm> {
   static RegExp emailRegex = RegExp(
       "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}");
   var emailValidator = (String? email) {
-    if (email == null || !emailRegex.hasMatch(email))
+    if (email == null || !emailRegex.hasMatch(email)) {
       return "Please enter a valid email";
+    }
     return null;
   };
   var passwordValidator = (String? password) {
-    if (password == null || password.length < 6)
+    if (password == null || password.length < 6) {
       return "Password must be >= 6 characters long";
+    }
     return null;
   };
   late String email;

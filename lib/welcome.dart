@@ -11,7 +11,7 @@ class WelcomeScreen extends StatelessWidget {
     var welcomeText = Text(
         style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 3.0),
         "Welcome to Figure.");
-    ContainerTransitionType _containerTransitionType =
+    ContainerTransitionType containerTransitionType =
         ContainerTransitionType.fade;
     return (Column(
       children: [
@@ -27,7 +27,7 @@ class WelcomeScreen extends StatelessWidget {
             flex: 3,
             child: Column(children: [
               OpenContainer(
-                transitionType: _containerTransitionType,
+                transitionType: containerTransitionType,
                 transitionDuration: const Duration(milliseconds: 500),
                 openBuilder: (context, _) => const SignupForm(),
                 closedElevation: 0,
@@ -48,7 +48,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
               OpenContainer(
-                transitionType: _containerTransitionType,
+                transitionType: containerTransitionType,
                 transitionDuration: const Duration(milliseconds: 500),
                 openBuilder: (context, _) => const SignInForm(),
                 closedElevation: 0,
