@@ -1,12 +1,11 @@
 import 'dart:convert';
 
-import 'package:figure_flutter/profile_dto.dart';
+import 'package:figure_flutter/backend.dart';
 import 'package:flutter/material.dart';
 
 import 'mainpage.dart';
 import 'main.dart';
 
-import 'package:http/http.dart' as http;
 
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
@@ -76,24 +75,17 @@ class SignInFormState extends State<SignInForm> {
                               "email": email,
                               "password": password
                             };
-                            var json = jsonEncode(data);
-                            var connection = await http.post(Uri.https(
-                                "backend.figure.novakovic.be", "/users/signin"),
-                            headers: {
-                              "content-type": "application/json",
-                              "content-length": json.length.toString()
-                            },
-                            body: json);
-                            var parsedResponseBody = jsonDecode(connection.body);
-                            if (parsedResponseBody["profile"] != null) {
+                            var result = await login(data);
+                            print('a');
+                            if (result != null) {
+                              print('b');
+                              sessionToken = result["sessionToken"];
+                              sessionProfile = result["sessionProfile"];
+                              localStorage.setString(
+                                  "session_token", sessionToken);
+                              localStorage.setString(
+                                  "profile", jsonEncode(sessionProfile));
                               setState(() {
-                                for (var header in connection.headers.keys) {
-                                  print(header.toString());
-                                }
-                                sessionToken = connection.headers["Set-Cookie"]!;
-                                sessionProfile = ProfileDTO.fromJson(parsedResponseBody["profile"]);
-                                localStorage.setString("session_token", sessionToken);
-                                localStorage.setString("profile", parsedResponseBody["profile"]);
                                 Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
