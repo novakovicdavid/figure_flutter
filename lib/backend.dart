@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'package:figure_flutter/figure_dto.dart';
 
@@ -8,12 +9,11 @@ var httpclient = HttpClient();
 
 Future<List<FigureDTO>> getFigures(int afterId, int? profileId) async {
   var connection = profileId == null
-      ? await httpclient.getUrl(
+      ? await http.get(
       Uri.parse("https://backend.figure.novakovic.be/figures/browse/$afterId"))
-      : await httpclient.getUrl(
+      : await http.get(
       Uri.parse("https://backend.figure.novakovic.be/profile/$profileId/browse/$afterId"));
-  var response = await connection.close();
-  var parsedResponseBody = jsonDecode(await readResponse(response));
+  var parsedResponseBody = jsonDecode(connection.body);
   if (parsedResponseBody["figures"] != null) {
     List<FigureDTO> figures = [];
     for (var figure in parsedResponseBody["figures"]) {
@@ -27,12 +27,11 @@ Future<List<FigureDTO>> getFigures(int afterId, int? profileId) async {
 
 Future<List<FigureDTO>> getFirstFigures(int? profileId) async {
   var connection = profileId == null
-      ? await httpclient.getUrl(
+      ? await http.get(
           Uri.parse("https://backend.figure.novakovic.be/figures/browse"))
-      : await httpclient.getUrl(
+      : await http.get(
           Uri.parse("https://backend.figure.novakovic.be/profile/$profileId/browse"));
-  var response = await connection.close();
-  var parsedResponseBody = jsonDecode(await readResponse(response));
+  var parsedResponseBody = jsonDecode(connection.body);
   if (parsedResponseBody["figures"] != null) {
     List<FigureDTO> figures = [];
     for (var figure in parsedResponseBody["figures"]) {
@@ -54,10 +53,9 @@ Future<String> readResponse(HttpClientResponse response) {
 }
 
 Future<FigureDTO?> getFigure(int id) async {
-  var connection = await httpclient
-      .getUrl(Uri.parse("https://backend.figure.novakovic.be/figures/$id"));
-  var response = await connection.close();
-  var parsedResponseBody = jsonDecode(await readResponse(response));
+  var connection = await http
+      .get(Uri.parse("https://backend.figure.novakovic.be/figures/$id"));
+  var parsedResponseBody = jsonDecode(connection.body);
   if (parsedResponseBody["figure"] != null) {
     return FigureDTO.fromJson(parsedResponseBody["figure"]);
   } else {
