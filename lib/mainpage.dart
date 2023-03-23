@@ -49,9 +49,18 @@ class MainWidgetState extends State<MainWidget> {
                                 child: const Text('Cancel'),
                               ),
                               TextButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     Navigator.pop(context, 'Logout');
-
+                                    await localStorage.clear();
+                                    sessionToken = "";
+                                    setState(() {
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => const MyApp()),
+                                            (route) => false,
+                                      );
+                                    });
                                   },
                                   child: const Text('Logout'))
                             ]));
