@@ -9,4 +9,12 @@ class ProfileDTO {
       id: json["id"],
       username: json["username"],
       displayName: json["display_name"]);
+
+  toJson() {
+    return {
+      "id": id,
+      "username": username,
+      "display_name": displayName
+    };
+  }
 }

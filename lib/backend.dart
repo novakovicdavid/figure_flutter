@@ -1,19 +1,21 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
+import 'package:figure_flutter/profile_dto.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:figure_flutter/figure_dto.dart';
 
 var httpclient = HttpClient();
+String backend = "backend.figure.novakovic.be";
+String scheme = "https";
 
 Future<List<FigureDTO>> getFigures(int afterId, int? profileId) async {
   var connection = profileId == null
-      ? await httpclient.getUrl(
-      Uri.parse("https://backend.figure.novakovic.be/figures/browse/$afterId"))
-      : await httpclient.getUrl(
-      Uri.parse("https://backend.figure.novakovic.be/profile/$profileId/browse/$afterId"));
-  var response = await connection.close();
-  var parsedResponseBody = jsonDecode(await readResponse(response));
+      ? await http.get(Uri.parse("$scheme://$backend/figures/browse/$afterId"))
+      : await http.get(
+          Uri.parse("$scheme://$backend/profile/$profileId/browse/$afterId"));
+  var parsedResponseBody = jsonDecode(connection.body);
   if (parsedResponseBody["figures"] != null) {
     List<FigureDTO> figures = [];
     for (var figure in parsedResponseBody["figures"]) {
@@ -27,12 +29,10 @@ Future<List<FigureDTO>> getFigures(int afterId, int? profileId) async {
 
 Future<List<FigureDTO>> getFirstFigures(int? profileId) async {
   var connection = profileId == null
-      ? await httpclient.getUrl(
-          Uri.parse("https://backend.figure.novakovic.be/figures/browse"))
-      : await httpclient.getUrl(
-          Uri.parse("https://backend.figure.novakovic.be/profile/$profileId/browse"));
-  var response = await connection.close();
-  var parsedResponseBody = jsonDecode(await readResponse(response));
+      ? await http.get(Uri.parse("$scheme://$backend/figures/browse"))
+      : await http
+          .get(Uri.parse("$scheme://$backend/profile/$profileId/browse"));
+  var parsedResponseBody = jsonDecode(connection.body);
   if (parsedResponseBody["figures"] != null) {
     List<FigureDTO> figures = [];
     for (var figure in parsedResponseBody["figures"]) {
@@ -54,12 +54,37 @@ Future<String> readResponse(HttpClientResponse response) {
 }
 
 Future<FigureDTO?> getFigure(int id) async {
-  var connection = await httpclient
-      .getUrl(Uri.parse("https://backend.figure.novakovic.be/figures/$id"));
-  var response = await connection.close();
-  var parsedResponseBody = jsonDecode(await readResponse(response));
+  var connection = await http.get(Uri.parse("$scheme://$backend/figures/$id"));
+  var parsedResponseBody = jsonDecode(connection.body);
   if (parsedResponseBody["figure"] != null) {
     return FigureDTO.fromJson(parsedResponseBody["figure"]);
+  } else {
+    return null;
+  }
+}
+
+login(data) async {
+  return createSession(data, "users/signin");
+}
+
+signup(data) async {
+  return createSession(data, "users/signup");
+}
+
+createSession(data, endpoint) async {
+  var json = jsonEncode(data);
+  var connection =
+      await httpclient.postUrl(Uri.parse("$scheme://$backend/$endpoint"));
+  connection.headers.add("content-type", "application/json");
+  connection.headers.contentLength = json.length;
+  connection.write(json);
+  var response = await connection.close();
+  var jsonString = await readResponse(response);
+  var parsedResponseBody = jsonDecode(jsonString);
+  if (parsedResponseBody["profile"] != null) {
+    var sessionToken = response.headers.value("Set-Cookie")!;
+    var sessionProfile = ProfileDTO.fromJson(parsedResponseBody["profile"]);
+    return {"sessionToken": sessionToken, "sessionProfile": sessionProfile};
   } else {
     return null;
   }

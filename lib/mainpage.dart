@@ -28,16 +28,36 @@ class MainWidgetState extends State<MainWidget> {
           color: Colors.blue,
           alignment: Alignment.center,
           child: const Text('Page 3'),
-        ),
-        Container(
-          color: Colors.yellow,
-          alignment: Alignment.center,
-          child: const Text('Page 4'),
-        ),
+        )
       ][currentPageIndex],
       bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) =>
-            setState(() => currentPageIndex = index),
+        onDestinationSelected: (int index) => setState(() => {
+              if (index != 3)
+                {currentPageIndex = index}
+              else
+                {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return (AlertDialog(
+                            title: const Text('Logout'),
+                            content: const Text('Are you sure you want to logout?'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancel'),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context, 'Logout');
+
+                                  },
+                                  child: const Text('Logout'))
+                            ]));
+                      })
+                }
+            }),
         selectedIndex: currentPageIndex,
         destinations: const [
           NavigationDestination(icon: Icon(Icons.list), label: 'Browse'),

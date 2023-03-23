@@ -1,11 +1,11 @@
 import 'dart:convert';
 
+import 'package:figure_flutter/backend.dart';
 import 'package:figure_flutter/mainpage.dart';
-import 'package:figure_flutter/profile_dto.dart';
 import 'package:flutter/material.dart';
 
-import 'backend.dart';
 import 'main.dart';
+
 
 class SignupForm extends StatefulWidget {
   const SignupForm({super.key});
@@ -52,7 +52,8 @@ class SignupFormState extends State<SignupForm> {
         style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 3.0),
         "Join Figure.");
 
-    return (Scaffold(body: Column(
+    return (Scaffold(
+        body: Column(
       children: [
         Expanded(
             child: Center(
@@ -61,69 +62,58 @@ class SignupFormState extends State<SignupForm> {
                     child: Container(
                         margin: const EdgeInsets.only(left: 40, right: 40),
                         child: title)))),
-        Container(margin: const EdgeInsets.only(left: 30, right: 30, bottom: 60), child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                TextFormField(
-                  validator: (value) => usernameValidator(value),
-                  onChanged: (value) => username = value,
-                  decoration: const InputDecoration(
-                    labelText: "Username"
-                  ),
-                ),
-                TextFormField(
-                  validator: (value) => emailValidator(value),
-                  onChanged: (value) => email = value,
-                  decoration: const InputDecoration(
-                      labelText: "Email"
-                  ),
-                ),
-                TextFormField(
-                  validator: (value) => passwordValidator(value),
-                  onChanged: (value) => password = value,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                      labelText: "Password"
-                  ),
-                ),
-                ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        var data = {
-                          "username": username,
-                          "email": email,
-                          "password": password
-                        };
-                        var json = jsonEncode(data);
-                        var connection = await httpclient.postUrl(Uri.parse(
-                            "https://backend.figure.novakovic.be/users/signup"));
-                        connection.headers
-                            .add("content-type", "application/json");
-                        connection.headers.contentLength = json.length;
-                        connection.write(json);
-                        var response = await connection.close();
-                        var jsonString = await readResponse(response);
-                        var parsedResponseBody = jsonDecode(jsonString);
-                        if (parsedResponseBody["profile"] != null) {
-                          setState(() {
-                            sessionToken = response.headers.value("Set-Cookie")!;
-                            sessionProfile = ProfileDTO.fromJson(parsedResponseBody["profile"]);
-                            localStorage.setString("session_token", sessionToken);
-                            localStorage.setString("profile", jsonString);
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const MainWidget()),
-                                  (route) => false,
-                            );
-                          });
-                        }
-                      }
-                    },
-                    child: const Text("Sign up"))
-              ],
-            )))
+        Container(
+            margin: const EdgeInsets.only(left: 30, right: 30, bottom: 60),
+            child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      validator: (value) => usernameValidator(value),
+                      onChanged: (value) => username = value,
+                      decoration: const InputDecoration(labelText: "Username"),
+                    ),
+                    TextFormField(
+                      validator: (value) => emailValidator(value),
+                      onChanged: (value) => email = value,
+                      decoration: const InputDecoration(labelText: "Email"),
+                    ),
+                    TextFormField(
+                      validator: (value) => passwordValidator(value),
+                      onChanged: (value) => password = value,
+                      obscureText: true,
+                      decoration: const InputDecoration(labelText: "Password"),
+                    ),
+                    ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            var data = {
+                              "username": username,
+                              "email": email,
+                              "password": password
+                            };
+                            var result = await signup(data);
+                            if (result != null) {
+                                sessionToken = result["sessionToken"];
+                                sessionProfile = result["sessionProfile"];
+                                localStorage.setString(
+                                    "session_token", sessionToken);
+                                localStorage.setString(
+                                    "profile", jsonEncode(sessionProfile));
+                                setState(() {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const MainWidget()),
+                                        (route) => false,
+                                  );
+                                });
+                            }
+                          }
+                        },
+                        child: const Text("Sign up"))
+                  ],
+                )))
       ],
     )));
   }
