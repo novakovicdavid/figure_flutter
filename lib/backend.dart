@@ -82,7 +82,8 @@ createSession(data, endpoint) async {
   var jsonString = await readResponse(response);
   var parsedResponseBody = jsonDecode(jsonString);
   if (parsedResponseBody["profile"] != null) {
-    var sessionToken = response.headers.value("Set-Cookie")!;
+    var sessionToken = response.headers.value("Set-Cookie")!.split("; ")[0];
+    sessionToken = sessionToken.split("=")[1];
     var sessionProfile = ProfileDTO.fromJson(parsedResponseBody["profile"]);
     return {"sessionToken": sessionToken, "sessionProfile": sessionProfile};
   } else {
