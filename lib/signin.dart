@@ -6,13 +6,11 @@ import 'package:flutter/material.dart';
 import 'mainpage.dart';
 import 'main.dart';
 
-
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
 
   @override
   State<StatefulWidget> createState() => SignInFormState();
-
 }
 
 class SignInFormState extends State<SignInForm> {
@@ -40,41 +38,38 @@ class SignInFormState extends State<SignInForm> {
     var title = Text(
         style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 3.0),
         "Login.");
-    return (Scaffold(body: Column(
-          children: [
-            Expanded(
-                child: Center(
-                    child: FittedBox(
-                        fit: BoxFit.fitWidth,
-                        child: Container(
-                            margin: const EdgeInsets.only(left: 40, right: 40),
-                            child: title)))),
-            Container(margin: const EdgeInsets.only(left: 30, right: 30, bottom: 60), child: Form(
+    return (Scaffold(
+        body: Column(
+      children: [
+        Expanded(
+            child: Center(
+                child: FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Container(
+                        margin: const EdgeInsets.only(left: 40, right: 40),
+                        child: title)))),
+        Container(
+            margin: const EdgeInsets.only(left: 30, right: 30, bottom: 60),
+            child: Form(
                 key: _formKey,
                 child: Column(
                   children: [
                     TextFormField(
                       validator: (value) => emailValidator(value),
                       onChanged: (value) => email = value,
-                      decoration: const InputDecoration(
-                          labelText: "Email"
-                      ),
+                      decoration: const InputDecoration(labelText: "Email"),
                     ),
                     TextFormField(
                       validator: (value) => passwordValidator(value),
                       onChanged: (value) => password = value,
                       obscureText: true,
-                      decoration: const InputDecoration(
-                          labelText: "Password"
-                      ),
+                      decoration: const InputDecoration(labelText: "Password"),
                     ),
+                    const Padding(padding: EdgeInsets.only(top: 50)),
                     ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            var data = {
-                              "email": email,
-                              "password": password
-                            };
+                            var data = {"email": email, "password": password};
                             var result = await login(data);
                             if (result != null) {
                               sessionToken = result["sessionToken"];
@@ -88,17 +83,21 @@ class SignInFormState extends State<SignInForm> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => const MainWidget()),
-                                      (route) => false,
+                                  (route) => false,
                                 );
                               });
                             }
                           }
                         },
-                        child: const Text("Login"))
+                        child: Container(
+                            alignment: Alignment.center,
+                            width: 200,
+                            child: const Padding(
+                                padding: EdgeInsets.all(16),
+                                child: Text("Login"))))
                   ],
                 )))
-          ],
-        ))
-    );
+      ],
+    )));
   }
 }

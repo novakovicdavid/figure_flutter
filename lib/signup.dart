@@ -84,6 +84,7 @@ class SignupFormState extends State<SignupForm> {
                       obscureText: true,
                       decoration: const InputDecoration(labelText: "Password"),
                     ),
+                    const Padding(padding: EdgeInsets.only(top: 50)),
                     ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
@@ -111,7 +112,12 @@ class SignupFormState extends State<SignupForm> {
                             }
                           }
                         },
-                        child: const Text("Sign up"))
+                        child: Container(
+                            alignment: Alignment.center,
+                            width: 200,
+                            child: const Padding(
+                                padding: EdgeInsets.all(16),
+                                child: Text("Sign up"))))
                   ],
                 )))
       ],
