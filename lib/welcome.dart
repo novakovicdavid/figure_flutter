@@ -3,14 +3,40 @@ import 'package:figure_flutter/signin.dart';
 import 'package:figure_flutter/signup.dart';
 import 'package:flutter/material.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
   @override
+  State<StatefulWidget> createState() => WelcomeScreenState();
+}
+
+class WelcomeScreenState extends State<WelcomeScreen>
+    with SingleTickerProviderStateMixin {
+  late final Tween<double> _tweenSize;
+  late final AnimationController _animationController;
+  late final Animation<double> _animationSize;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 400));
+    _tweenSize = Tween<double>(begin: 0.1, end: 60.0);
+    _animationSize = _tweenSize.animate(_animationController)
+      ..addListener(() {
+        setState(() {});
+      });
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var welcomeText = Text(
-        style: DefaultTextStyle.of(context).style.apply(fontSizeFactor: 3.0),
-        "Welcome to Figure.");
     ContainerTransitionType containerTransitionType =
         ContainerTransitionType.fade;
     return (Column(
@@ -22,7 +48,9 @@ class WelcomeScreen extends StatelessWidget {
                     fit: BoxFit.fitWidth,
                     child: Container(
                         margin: const EdgeInsets.only(left: 40, right: 40),
-                        child: welcomeText)))),
+                        child: Text(
+                            style: TextStyle(fontSize: _animationSize.value),
+                            "Welcome to Figure."))))),
         Expanded(
             flex: 3,
             child: Column(children: [
@@ -42,7 +70,7 @@ class WelcomeScreen extends StatelessWidget {
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 15,
-                      fontWeight: FontWeight.w500),
+                          fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),
