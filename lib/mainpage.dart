@@ -1,5 +1,6 @@
 import 'package:figure_flutter/browse.dart';
 import 'package:figure_flutter/main.dart';
+import 'package:figure_flutter/upload.dart';
 import 'package:flutter/material.dart';
 
 class MainWidget extends StatefulWidget {
@@ -24,11 +25,7 @@ class MainWidgetState extends State<MainWidget> {
           alignment: Alignment.center,
           child: BrowsePage(profileId: sessionProfile.id),
         ),
-        Container(
-          color: Colors.blue,
-          alignment: Alignment.center,
-          child: const Text('Page 3'),
-        )
+        const UploadWidget()
       ][currentPageIndex],
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) => setState(() => {

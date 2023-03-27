@@ -44,10 +44,10 @@ Future<List<FigureDTO>> getFirstFigures(int? profileId) async {
   }
 }
 
-Future<String> readResponse(HttpClientResponse response) {
+Future<String> readResponse(Stream stream) {
   final completer = Completer<String>();
   final contents = StringBuffer();
-  response.transform(utf8.decoder).listen((data) {
+  stream.transform(utf8.decoder).listen((data) {
     contents.write(data);
   }, onDone: () => completer.complete(contents.toString()));
   return completer.future;
@@ -88,5 +88,23 @@ createSession(data, endpoint) async {
     return {"sessionToken": sessionToken, "sessionProfile": sessionProfile};
   } else {
     return null;
+  }
+}
+
+upload(title, description, image, sessionId) async {
+  var request = http.MultipartRequest('POST', Uri.parse("$scheme://$backend/figures/upload"))
+    ..headers["cookie"] = "session_id=$sessionId"
+    ..fields['title'] = title
+    ..fields['description'] = description
+    ..files.add(http.MultipartFile.fromBytes("file", image));
+  var response = await request.send();
+
+
+  if (response.statusCode == 200) {
+    var figureId = jsonDecode(await readResponse(response.stream))["figure_id"];
+    return figureId;
+  }
+  else {
+    print(sessionId);
   }
 }
