@@ -94,7 +94,7 @@ class SignInFormState extends State<SignInForm> {
                             }
                           }
                         },
-                        child: const Text("Sign up"))
+                        child: const Text("Login"))
                   ],
                 )))
           ],
