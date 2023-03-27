@@ -76,9 +76,7 @@ class SignInFormState extends State<SignInForm> {
                               "password": password
                             };
                             var result = await login(data);
-                            print('a');
                             if (result != null) {
-                              print('b');
                               sessionToken = result["sessionToken"];
                               sessionProfile = result["sessionProfile"];
                               localStorage.setString(
