@@ -62,9 +62,9 @@ class WelcomeScreenState extends State<WelcomeScreen>
                 closedColor: Colors.blue,
                 closedBuilder: (context, _) => Container(
                   alignment: Alignment.center,
-                  width: 100,
+                  width: 200,
                   child: const Padding(
-                    padding: EdgeInsets.all(8),
+                    padding: EdgeInsets.all(16),
                     child: Text(
                       "Sign Up",
                       style: TextStyle(
@@ -75,6 +75,7 @@ class WelcomeScreenState extends State<WelcomeScreen>
                   ),
                 ),
               ),
+              const Padding(padding: EdgeInsets.only(top: 50)),
               OpenContainer(
                 transitionType: containerTransitionType,
                 transitionDuration: const Duration(milliseconds: 500),
@@ -83,9 +84,9 @@ class WelcomeScreenState extends State<WelcomeScreen>
                 closedColor: Colors.blue,
                 closedBuilder: (context, _) => Container(
                   alignment: Alignment.center,
-                  width: 100,
+                  width: 200,
                   child: const Padding(
-                    padding: EdgeInsets.all(8),
+                    padding: EdgeInsets.all(16),
                     child: Text(
                       "Login",
                       style: TextStyle(
