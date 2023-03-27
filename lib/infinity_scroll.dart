@@ -79,18 +79,19 @@ class FigureListItem extends StatelessWidget {
         onTap: () => Navigator.push(context,
             MaterialPageRoute(builder: (context) => FigurePage(figure.id))),
         child: Column(children: [
-      CachedNetworkImage(
-        imageUrl: figure.url,
-        placeholder: (context, url) => AspectRatio(
-            aspectRatio: figure.width / figure.height,
-            child: const Center(
-                child: SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: CircularProgressIndicator()))),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
-      ),
-      Text(figure.title)
-    ])));
+          CachedNetworkImage(
+            imageUrl: figure.url,
+            placeholder: (context, url) => AspectRatio(
+                aspectRatio: figure.width / figure.height,
+                child: const Center(
+                    child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator()))),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          ),
+          Text(figure.title),
+          const Padding(padding: EdgeInsets.only(top: 25)),
+        ])));
   }
 }
