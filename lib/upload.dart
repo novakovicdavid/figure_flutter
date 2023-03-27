@@ -63,7 +63,7 @@ class UploadState extends State<UploadWidget> {
                           }
                         }
                       },
-                      child: const Text("Sign up"))
+                      child: const Text("Upload"))
                 ])
               )
 
