@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
     Widget screenToShow;
     try {
       sessionToken = localStorage.getString("session_token")!;
-      sessionProfile = ProfileDTO.fromJson(jsonDecode(localStorage.getString("profile")!)["profile"]);
+      sessionProfile = ProfileDTO.fromJson(jsonDecode(localStorage.getString("profile")!));
       screenToShow = const MainWidget();
     } catch (e) {
       screenToShow = const WelcomeScreen();
